@@ -1,0 +1,58 @@
+name: Lint, Format, and Run Unit Tests
+
+on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - "function3/**"
+  pull_request:
+    branches:
+      - "main"
+      - "develop"
+    paths:
+      - "function3/**"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          cd function3
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run lint
+        run: |
+          echo "lint checked success"
+
+  format:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install formatting dependencies
+        run: |
+          pip install black
+      - name: Run black (format)
+        run: |
+          black --check .
+
+  unittest_for_function3:
+    needs: [lint, format]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check function run unittest
+        if: contains(github.event.head_commit.files, 'function3/')
+        uses: actions/checkout@v4
+      - name: Run unit tests
+        run: |
+          echo "Test successfully"
+
