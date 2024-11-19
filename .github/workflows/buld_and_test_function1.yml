@@ -1,5 +1,3 @@
-name: Lint, Format, and Run Unit Tests
-
 on:
   push:
     branches:
