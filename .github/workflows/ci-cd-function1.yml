@@ -40,6 +40,9 @@ jobs:
       - name: Check function run unittest
         if: contains(github.event.head_commit.files, 'function1/')
         uses: actions/checkout@v4
+      - name: Install pytest
+        run: |
+          pip install pytest
       - name: Run unit tests
         run: |
-          echo "Test successfully"
+          pytest
