@@ -1,17 +1,15 @@
-name: Lint, Format, and Run Unit Tests
-
 on:
   push:
     branches:
       - "**"
     paths:
-      - "function2/**"
+      - "function4/**"
   pull_request:
     branches:
       - "main"
       - "develop"
     paths:
-      - "function2/**"
+      - "function4/**"
 
 jobs:
   lint:
@@ -25,34 +23,23 @@ jobs:
           python-version: "3.10"
       - name: Install dependencies
         run: |
-          cd function2
           python -m pip install --upgrade pip
+          pip install flake8
+          cp dist/shared-0.0.1.tar.gz function4/dist
+          cd function4
           pip install -r requirements.txt
-      - name: Run lint
+      - name: Lint with flake8
         run: |
-          echo "lint checked success"
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
 
-  format:
+  unittest_for_function4:
     needs: lint
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Install formatting dependencies
-        run: |
-          pip install black
-      - name: Run black (format)
-        run: |
-          black --check .
-
-  unittest_for_function2:
-    needs: [lint, format]
-    runs-on: ubuntu-latest
-    steps:
       - name: Check function run unittest
-        if: contains(github.event.head_commit.files, 'function2/')
+        if: contains(github.event.head_commit.files, 'function4/')
         uses: actions/checkout@v4
       - name: Run unit tests
         run: |
           echo "Test successfully"
-
