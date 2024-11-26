@@ -6,4 +6,4 @@ apiclient==1.0.4
 python-dotenv==0.15.0
 flask==3.0.3
 pandas==2.2.3
-../dist/shared-0.0.1.tar.gz
+./dist/shared-0.0.1.tar.gz
