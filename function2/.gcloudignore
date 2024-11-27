@@ -1,0 +1,8 @@
+deploy.sh
+.gcloudignore
+.gitignore
+.env
+.env.example
+/test/ *~
+main_local.py
+service_account_key.json
