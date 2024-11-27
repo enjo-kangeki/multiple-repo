@@ -1,4 +1,4 @@
-name: Build and Test function2
+name: CI-CD for function2
 
 on:
   push:
@@ -14,9 +14,8 @@ on:
     paths:
       - "function2/**"
 
-
 jobs:
-  unittest_for_function2:
+  build_and_test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

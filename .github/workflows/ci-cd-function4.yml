@@ -1,4 +1,4 @@
-name: Build and Test function4
+name: CI-CD for function4
 
 on:
   push:
@@ -15,7 +15,7 @@ on:
       - "function4/**"
 
 jobs:
-  build_and_test_function1:
+  build_and_test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -33,4 +33,3 @@ jobs:
       - name: Run unit tests
         run: |
           pytest function4/tests
-
