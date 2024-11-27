@@ -1,0 +1,1 @@
+# Common function using for each Cloud run functions
