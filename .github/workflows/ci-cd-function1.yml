@@ -16,23 +16,9 @@ on:
 
 jobs:
   build_and_test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          mkdir -p function1/dist
-          cp -r dist/shared-0.0.1.tar.gz function1/dist
-          cd function1
-          pip install -r requirements.txt
-      - name: Install pytest
-        run: |
-          pip install pytest
-      - name: Run unit tests
-        run: |
-          pytest function1/tests
+    uses: "enjo-kangeki/multiple-repo/workflows/reusable-build-test.yml"
+    with:
+      function_path: "function1"
   deploy-dev:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
     permissions:
@@ -49,18 +35,18 @@ jobs:
         name: "Authenticate to Google Cloud"
         run: |
           echo ${{ secrets.DEV_WORKLOAD_IDENTITY_PROVIDER }}
-        # uses: "google-github-actions/auth@v2"
+        # uses: 'google-github-actions/auth@v2'
         # with:
         #   workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
         #   service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
-      # - name: "Set up Cloud SDK"
-      #   uses: "google-github-actions/setup-gcloud@v2"
+      # - name: 'Set up Cloud SDK'
+      #   uses: 'google-github-actions/setup-gcloud@v2'
       #   with:
-      #     version: ">= 363.0.0"
+      #     version: '>= 363.0.0'
 
-      # - name: "Use gcloud CLI"
-      #   run: "gcloud info"
+      # - name: 'Use gcloud CLI'
+      #   run: 'gcloud info'
   deploy-prod:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
     permissions:
@@ -77,15 +63,15 @@ jobs:
         name: "Authenticate to Google Cloud"
         run: |
           echo ${{ secrets.PROD_WORKLOAD_IDENTITY_PROVIDER }}
-        # uses: "google-github-actions/auth@v2"
+        # uses: 'google-github-actions/auth@v2'
         # with:
         #   workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
         #   service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
-      # - name: "Set up Cloud SDK"
-      #   uses: "google-github-actions/setup-gcloud@v2"
+      # - name: 'Set up Cloud SDK'
+      #   uses: 'google-github-actions/setup-gcloud@v2'
       #   with:
-      #     version: ">= 363.0.0"
+      #     version: '>= 363.0.0'
 
-      # - name: "Use gcloud CLI"
-      #   run: "gcloud info"
+      # - name: 'Use gcloud CLI'
+      #   run: 'gcloud info'
