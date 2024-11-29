@@ -16,7 +16,61 @@ on:
 
 jobs:
   build_and_test:
-    name: 'Build and test (Main flow)'
+    name: "Build and test (Main flow)"
     uses: ./.github/workflows/reusable-build-test.yml
     with:
       function-path: "function1"
+  deploy-dev:
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    needs: build_and_test
+    environment:
+      name: development
+      url: https://your-development-url.com
+    steps:
+      - uses: actions/checkout@v4
+      - id: "auth-to-google-cloud"
+        name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v2"
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ secrets.PROJECT_ID }}
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2"
+        with:
+          version: ">= 363.0.0"
+
+      - name: "Use gcloud CLI"
+        run: "gcloud info"
+  deploy-prod:
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    needs: build_and_test
+    environment:
+      name: production
+      url: https://your-production-url.com
+    steps:
+      - uses: actions/checkout@v4
+      - id: "auth-to-google-cloud"
+        name: "Authenticate to Google Cloud"
+        run: |
+          echo ${{ secrets.PROD_WORKLOAD_IDENTITY_PROVIDER }}
+        # uses: 'google-github-actions/auth@v2'
+        # with:
+        #   workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+        #   service_account: ${{ secrets.SERVICE_ACCOUNT }}
+
+      # - name: 'Set up Cloud SDK'
+      #   uses: 'google-github-actions/setup-gcloud@v2'
+      #   with:
+      #     version: '>= 363.0.0'
+
+      # - name: 'Use gcloud CLI'
+      #   run: 'gcloud info'
