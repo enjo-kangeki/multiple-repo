@@ -1,4 +1,4 @@
-name: CI-CD for function2
+name: CI-CD for function1
 
 on:
   push:
@@ -15,7 +15,8 @@ on:
       - "function1/**"
 
 jobs:
-  call_reusable_workflow:
-    uses: ./.github/workflows/base-build-test.yml
+  build_and_test:
+    name: 'Build and test (Main flow)'
+    uses: ./.github/workflows/reusable-build-test.yml
     with:
       function-path: "function1"
