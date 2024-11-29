@@ -3,22 +3,23 @@ name: CI-CD for function1
 on:
   push:
     branches:
-      - "main"
+      - "master"
       - "develop"
     paths:
       - "function1/**"
   pull_request:
     branches:
-      - "main"
+      - "master"
       - "develop"
     paths:
       - "function1/**"
 
 jobs:
   build_and_test:
-    uses: "enjo-kangeki/multiple-repo/workflows/reusable-build-test.yml"
+    name: "Build and test (Main flow)"
+    uses: ./.github/workflows/reusable-build-test.yml
     with:
-      function_path: "function1"
+      function-path: "function1"
   deploy-dev:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/develop' }}
     permissions:
@@ -33,20 +34,18 @@ jobs:
       - uses: actions/checkout@v4
       - id: "auth-to-google-cloud"
         name: "Authenticate to Google Cloud"
-        run: |
-          echo ${{ secrets.DEV_WORKLOAD_IDENTITY_PROVIDER }}
-        # uses: 'google-github-actions/auth@v2'
-        # with:
-        #   workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
-        #   service_account: ${{ secrets.SERVICE_ACCOUNT }}
+        uses: "google-github-actions/auth@v2"
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ secrets.PROJECT_ID }}
 
-      # - name: 'Set up Cloud SDK'
-      #   uses: 'google-github-actions/setup-gcloud@v2'
-      #   with:
-      #     version: '>= 363.0.0'
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2"
+        with:
+          version: ">= 363.0.0"
 
-      # - name: 'Use gcloud CLI'
-      #   run: 'gcloud info'
+      - name: "Use gcloud CLI"
+        run: "gcloud info"
   deploy-prod:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
     permissions:

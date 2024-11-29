@@ -3,13 +3,13 @@ name: CI-CD for function3
 on:
   push:
     branches:
-      - "main"
+      - "master"
       - "develop"
     paths:
       - "function3/**"
   pull_request:
     branches:
-      - "main"
+      - "master"
       - "develop"
     paths:
       - "function3/**"

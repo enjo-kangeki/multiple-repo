@@ -6,5 +6,5 @@ import functions_framework
 def function1(cloud_event):
     """Handle Pub/Sub messages."""
     pubsub_message = base64.b64decode(cloud_event.data["message"]["data"]).decode("utf-8")
-    print("demo")
+    print("vantanhly")
     print(pubsub_message)

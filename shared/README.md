@@ -1,1 +1,1 @@
-# Common function using for each Cloud run functions
+# Common module using for multiple cloud functions
