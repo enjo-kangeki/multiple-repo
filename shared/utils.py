@@ -1,2 +1,2 @@
-def add_two_numbers(a: int, b: int):
-    return a + b
+def example_function():
+    return "Example function"
