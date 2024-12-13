@@ -13,4 +13,5 @@ def function1(cloud_event):
         Response object using `make_response`
         <https://flask.palletsprojects.com/en/1.1.x/api/#flask.make_response>.
     """
+
     print("111", example_function())
