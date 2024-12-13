@@ -49,9 +49,14 @@ jobs:
         timeout-minutes: 10
         with:
           project_id: ${{ secrets.PROJECT_ID }}
-          name: "functionTest"
+          name: "functionTest2"
           region: "asia-northeast1"
           source_dir: "function1"
           runtime: "python310"
           entry_point: "function1"
           service_timeout: "3600"
+          environment_variables: |-
+            TEST='test'
+          event_trigger_type: "google.cloud.pubsub.topic.v1.messagePublished"
+          event_trigger_filters: |
+            resource=projects/th-research/topics/test

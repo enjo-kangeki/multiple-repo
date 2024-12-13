@@ -3,7 +3,7 @@ from shared.utils import example_function
 
 
 @functions_framework.cloud_event
-def function1(request):
+def function1(cloud_event):
     """HTTP Cloud Function.
     Args:
         request (flask.Request): The request object.
@@ -13,6 +13,4 @@ def function1(request):
         Response object using `make_response`
         <https://flask.palletsprojects.com/en/1.1.x/api/#flask.make_response>.
     """
-    request_json = request.get_json(silent=True)
-
     print("111", example_function())
