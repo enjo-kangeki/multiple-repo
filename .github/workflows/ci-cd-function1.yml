@@ -54,7 +54,7 @@ jobs:
           source_dir: "function1"
           runtime: "python310"
           entry_point: "function1"
-          service_timeout: "3600"
+          service_timeout: "540"
           environment_variables: |-
             TEST='test'
           event_trigger_type: google.cloud.storage.object.v1.finalized
